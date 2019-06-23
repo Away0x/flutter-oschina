@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:oschina/application.dart';
+import 'package:oschina/utils/event_bus.dart';
 
 import './part/profile_top.dart';
 
@@ -38,6 +39,15 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
 
     _showUserInfo();
+    // 登录
+    eventBus.on<LoginEvent>().listen((event) {
+      // 获取用户信息
+
+    });
+    // 登出
+    eventBus.on<LogoutEvent>().listen((event) {
+      // TODO
+    });
   }
 
   // 尝试获取用户信息
@@ -46,9 +56,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   // 登录
-  // _login() async {
+  _login() async {
+    final result = await Application.navigateTo(context, '/login');
 
-  // }
+    if (result != null && result == 'refresh') {
+      // 登录成功
+      eventBus.fire(LoginEvent());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
       itemBuilder: (context, index) {
         if (index == 0) {
           return ProfileTop(
-            onLogin: () {
-              Application.navigateTo(context, '/login');
-            },
+            onLogin: _login,
           );
         }
 

@@ -1,6 +1,5 @@
+import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-import 'package:oschina/constants/app.dart';
 
 class Services {
 
@@ -8,7 +7,17 @@ class Services {
   // 授权登录 ctrl shift u
   static const String OAUTH2_AUTHORIZE = API_ROOT + '/action/oauth2/authorize';
 
-  static Future<String> httpGET(String url, {Map<String, dynamic> params}) async {
+  static Map<String, dynamic> _resolveResp(String resp) {
+    if (resp != null && resp.isNotEmpty) {
+      Map<String, dynamic> map = json.decode(resp );
+
+      return map ?? {}; 
+    }
+
+    return {};
+  }
+
+  static Future<Map<String, dynamic>> httpGET(String url, {Map<String, dynamic> params}) async {
     var api = API_ROOT + url;
     
     if (params != null && params.isNotEmpty) {
@@ -23,30 +32,36 @@ class Services {
     try {
       http.Response resp = await http.get(api);
 
-      return resp.body;
+      return _resolveResp(resp.body);
     } catch (e) {
       print("http get error: $e");
-      return '';
+      return {};
     }
   }
 
-  static Future<String> httpPOST(String url, {Map<String, dynamic> params}) async {
+  static Future<Map<String, dynamic>> httpPOST(String url, {Map<String, dynamic> params}) async {
     try {
       http.Response resp = await http.post(API_ROOT + url, body: params);
 
-      return resp.body;
+      return _resolveResp(resp.body);
     } catch (e) {
       print("http post error: $e");
-      return '';
+      return {};
     }
   }
 
-  // 授权登录
-  Future<String> authorize() async {
-    var resource = await httpGET('/action/oauth2/authorize');
+}
 
-    print(resource);
-    return resource;
-  }
+class ActionResponse<T> {
+
+  final bool status;
+  final String message;
+  final T data;
+
+  ActionResponse({
+    this.status,
+    this.message,
+    this.data,
+  });
 
 }

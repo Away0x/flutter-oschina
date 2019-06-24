@@ -1,6 +1,6 @@
 
 class AppInfo {
-  static const String CLIENT_ID = '6i4Yu6IUqXnR64em0rsJ'; // 应用 id
-  static const String CLIENT_SECRET = 'Pb9t3prZqBYDeB9DjTvmCzGLu7EFJyt9'; // 应用密钥
-  static const String REDIRECT_URI = 'https://www.dongnaoedu.com/'; // 回调地址
+  static const String CLIENT_ID = 'tuEA1XrCZ3fe054nuHPd'; // 应用 id
+  static const String CLIENT_SECRET = 'qp2zrfkFdsJhAnt54xipN4acsl6DDN6N'; // 应用密钥
+  static const String REDIRECT_URI = 'http://blog.frontendgo.com/'; // 回调地址
 }
